@@ -4,7 +4,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(
+   hubOptions =>
+   {
+      hubOptions.MaximumReceiveMessageSize = 32 * 1024 * 1024;
+      hubOptions.SupportedProtocols?.Remove("json");
+      hubOptions.MaximumParallelInvocationsPerClient = 16;
+   }).AddMessagePackProtocol();
 
 var app = builder.Build();
 
