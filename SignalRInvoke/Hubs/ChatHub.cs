@@ -8,13 +8,10 @@ namespace SignalRInvoke.Hubs
        public async Task InvokeMessage(string user, string message)
        {
           Console.WriteLine("Hub.InvokeMessage: method entry.");
-          Stopwatch timer = new();
-          timer.Restart();
+          // System.Exception thrown here after the client returned bool value.
           bool result = await Clients.Caller.InvokeAsync<bool>(
              "ReceiveMessageInvoke", user, message, CancellationToken.None);
-          timer.Stop();
-          var ms = timer.ElapsedMilliseconds;
-          Console.WriteLine($"Hub.InvokeMessage: method exit. result: {result}, time: {ms}");
+          Console.WriteLine($"Hub.InvokeMessage: method exit. result: {result}.");
        }
     }
 }
