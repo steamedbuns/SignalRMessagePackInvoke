@@ -2,7 +2,7 @@
 
 namespace SignalRInvoke.Hubs
 {
-    public class ChatHub : Hub<ICustomClient>
+    public class ChatHub : Hub
     {
         public async Task InvokeMessage(string user, string message)
         {
@@ -10,7 +10,9 @@ namespace SignalRInvoke.Hubs
             // System.Exception thrown here after the client returned bool value.
             try
             {
-                bool result = await Clients.Caller.ReceiveMessageInvoke(user, message);
+                bool result =
+                    await Clients.Caller.InvokeAsync<bool>("ReceiveMessageInvoke", user, message,
+                        CancellationToken.None);
                 Console.WriteLine($"Hub.InvokeMessage: method exit. Result: {result}.");
             }
             catch (Exception e)
